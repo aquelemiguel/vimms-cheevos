@@ -3,7 +3,13 @@
 	"version": "1.0.0",
 	"manifest_version": 3,
 	"background": {
-		"service_worker": "src/script.ts"
+		"service_worker": "src/services/ra-client.ts"
 	},
+	"content_scripts": [
+		{
+			"matches": ["*://*.vimm.net/*"],
+			"js": ["src/scripts/game-page-scraper.ts"]
+		}
+	],
 	"options_page": "src/options.html"
 }

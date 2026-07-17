@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@retroachievements/api':
+        specifier: ^2.10.0
+        version: 2.10.0
       webextension-polyfill:
         specifier: ^0.12.0
         version: 0.12.0
@@ -81,6 +84,10 @@ packages:
   '@pnpm/npm-conf@3.0.3':
     resolution: {integrity: sha512-//0sR/cow/s4ICQaYoAobOl4aU8cjU6x/V24V7XkKotb9+O+3zySIYp146vpaobYHnxa4pZX8NkV54Z5AwbDKA==}
     engines: {node: '>=12'}
+
+  '@retroachievements/api@2.10.0':
+    resolution: {integrity: sha512-dLEnjtdhyl8PdKKMa6Itian8eDHNlP8KguY0r6egAQIR/q/8EOLS62cfjhKScMn/y/YwhXCz4+eCEVjYAwBnsg==}
+    engines: {node: '>=16'}
 
   '@rolldown/binding-android-arm64@1.1.5':
     resolution: {integrity: sha512-lZg8fqIv2v7FF237bwMgzGZEJvGL79/s5knJ/i6FmsGF4XXlzccZ4jb+TrFIxtSSxFtIpdsgrPZeMk1I9AFcyQ==}
@@ -1100,6 +1107,8 @@ snapshots:
       '@pnpm/config.env-replace': 1.1.0
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
+
+  '@retroachievements/api@2.10.0': {}
 
   '@rolldown/binding-android-arm64@1.1.5':
     optional: true
