@@ -20,10 +20,16 @@ import browser from "webextension-polyfill";
 	const gameTitle = atob(encodedGameTitle);
 	console.log(gameTitle);
 
+	const md5Hash = document.querySelector(".goodHash #data-md5");
+	if (!md5Hash) {
+		return;
+	}
+
 	const response = await browser.runtime.sendMessage({
 		type: "MATCH_GAME", // TODO: type this later on
 		title: gameTitle,
 		system: systemTitle,
+		md5: md5Hash.textContent,
 	});
 
 	console.log(`response from worker: ${response}`);

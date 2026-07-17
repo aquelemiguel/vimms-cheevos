@@ -1,8 +1,10 @@
 import browser from "webextension-polyfill";
+import { isHashSupported } from "../api/ra";
 
 browser.runtime.onMessage.addListener(async (message, sender) => {
+	console.log(message);
+
 	if (message.type === "MATCH_GAME") {
-		// TODO: actually call api here
-		return true;
+		return isHashSupported(1, message.md5);
 	}
 });
