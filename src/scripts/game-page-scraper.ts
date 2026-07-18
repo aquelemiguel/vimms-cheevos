@@ -124,7 +124,6 @@ function buildRaRow() {
 				MatchGameMessageRequest,
 				MatchGameMessageResponse
 			>({
-				type: "MATCH_GAME",
 				gameTitle,
 				gameVariant,
 				systemName: systemName,

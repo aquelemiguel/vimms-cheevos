@@ -1,5 +1,4 @@
 export interface MatchGameMessageRequest {
-	type: "MATCH_GAME";
 	gameTitle: string;
 	gameVariant: string;
 	systemName: string;

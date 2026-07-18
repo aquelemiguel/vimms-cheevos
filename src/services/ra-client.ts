@@ -1,7 +1,11 @@
 import browser from "webextension-polyfill";
 import { isVariantSupported, searchTitle } from "../api/ra";
+import type { MatchGameMessageRequest } from "../types/messages";
 
-browser.runtime.onMessage.addListener(async (message, sender) => {
+// @ts-expect-error
+browser.runtime.onMessage.addListener(async (m) => {
+	const message = m as MatchGameMessageRequest;
+
 	const gameId = await searchTitle(message.gameTitle, message.systemName);
 	if (!gameId) {
 		return {
@@ -10,12 +14,6 @@ browser.runtime.onMessage.addListener(async (message, sender) => {
 		};
 	}
 
-	if (message.type === "MATCH_GAME") {
-		const isSupported = await isVariantSupported(gameId, message.gameVariant);
-
-		return {
-			gameId,
-			isSupported,
-		};
-	}
+	const isSupported = await isVariantSupported(gameId, message.gameVariant);
+	return { gameId, isSupported };
 });
