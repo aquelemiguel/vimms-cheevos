@@ -101,7 +101,7 @@ function buildRaRow() {
 		raStatus.style.cssText = "color: silver";
 
 		try {
-			const { gameId, isSupported } = await browser.runtime.sendMessage<
+			const response = await browser.runtime.sendMessage<
 				MatchGameMessageRequest,
 				MatchGameMessageResponse
 			>({
@@ -109,6 +109,13 @@ function buildRaRow() {
 				gameVariant,
 				systemName: systemName,
 			});
+
+			if (response.isMissingAuth) {
+				raStatus.textContent = "Missing/invalid RA config!";
+				return;
+			}
+
+			const { gameId, isSupported } = response;
 
 			raStatus.textContent = isSupported ? "Supported" : "Unsupported";
 			raStatus.style.cssText = isSupported

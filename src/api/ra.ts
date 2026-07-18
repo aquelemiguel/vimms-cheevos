@@ -1,9 +1,13 @@
-import { buildAuthorization, getGameHashes } from "@retroachievements/api";
+import {
+	type AuthObject,
+	buildAuthorization,
+	getGameHashes,
+} from "@retroachievements/api";
 import browser from "webextension-polyfill";
 import { getRASystemId } from "../constants/systems";
 import type { RASearchResponse } from "../types/ra";
 
-async function getAuthObject() {
+export async function getAuthorization() {
 	const { raUsername, raWebApiKey } = (await browser.storage.local.get([
 		"raUsername",
 		"raWebApiKey",
@@ -21,12 +25,11 @@ async function getAuthObject() {
 	});
 }
 
-export async function isVariantSupported(gameId: number, gameVariant: string) {
-	const authorization = await getAuthObject();
-	if (!authorization) {
-		return false; // TODO: probably throw some specific error here
-	}
-
+export async function isVariantSupported(
+	authorization: AuthObject,
+	gameId: number,
+	gameVariant: string,
+) {
 	const hashes = await getGameHashes(authorization, { gameId });
 
 	for (const result of hashes.results) {

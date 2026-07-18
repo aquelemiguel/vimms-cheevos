@@ -1,10 +1,20 @@
-export interface MatchGameMessageRequest {
+export type MatchGameMessageRequest = {
 	gameTitle: string;
 	gameVariant: string;
 	systemName: string;
-}
+};
 
-export interface MatchGameMessageResponse {
-	gameId: number | null;
-	isSupported: boolean;
-}
+export type MatchGameMessageResponse =
+	| {
+			isMissingAuth: true;
+	  }
+	| {
+			isMissingAuth: false;
+			gameId: null;
+			isSupported: false;
+	  }
+	| {
+			isMissingAuth: false;
+			gameId: number;
+			isSupported: boolean;
+	  };
