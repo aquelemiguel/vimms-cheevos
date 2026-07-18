@@ -1,6 +1,20 @@
 import browser from "webextension-polyfill";
 import type { MatchGameMessage } from "../types/messages";
 
+function observeTextContent(target: Node, cb: (newText: string) => void) {
+	const observer = new MutationObserver(() => {
+		cb(target.textContent ?? "");
+	});
+
+	observer.observe(target, {
+		characterData: true,
+		childList: true,
+		subtree: true,
+	});
+
+	return () => observer.disconnect();
+}
+
 (async () => {
 	const raRow = document.createElement("tr");
 
@@ -35,21 +49,29 @@ import type { MatchGameMessage } from "../types/messages";
 	const gameTitle = atob(encodedGameTitle);
 	console.log(gameTitle);
 
+	async function checkHashMatch(md5: string) {
+		raRowStatus.textContent = "Checking...";
+
+		const response = await browser.runtime.sendMessage<
+			MatchGameMessage,
+			boolean
+		>({
+			type: "MATCH_GAME",
+			title: gameTitle,
+			system: systemTitle?.textContent ?? "",
+			md5,
+		});
+
+		raRowStatus.textContent = response ? "Supported" : "Unsupported";
+	}
+
 	const md5Hash = document.querySelector(".goodHash #data-md5");
 	if (!md5Hash) {
 		return;
 	}
 
-	const response = await browser.runtime.sendMessage<MatchGameMessage, boolean>(
-		{
-			type: "MATCH_GAME",
-			title: gameTitle,
-			system: systemTitle.textContent,
-			md5: md5Hash.textContent,
-		},
-	);
-
-	raRowStatus.textContent = response ? "Supported" : "Unsupported";
+	checkHashMatch(md5Hash.textContent);
+	observeTextContent(md5Hash, checkHashMatch);
 
 	// TODO: incorporate logo somehow
 	// const raRowLogo = document.createElement("img");
