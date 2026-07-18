@@ -61,6 +61,7 @@ function buildRaRow() {
 
 	const rowStatus = document.createElement("span");
 	rowStatus.textContent = "Checking...";
+	rowStatus.style = "color:silver";
 
 	const rowLinkContainer = document.createElement("div");
 	rowLinkContainer.style = "float: right; font-size: 90%; padding-top: 2px";
@@ -118,6 +119,7 @@ function buildRaRow() {
 		systemName: string,
 	) {
 		raStatus.textContent = "Checking...";
+		raStatus.style = "color:silver";
 
 		try {
 			const { gameId, isSupported } = await browser.runtime.sendMessage<
@@ -130,6 +132,7 @@ function buildRaRow() {
 			});
 
 			raStatus.textContent = isSupported ? "Supported" : "Unsupported";
+			raStatus.style = isSupported ? "color:#FFFF99" : "color:silver";
 
 			if (gameId !== null) {
 				raLink.style = "";
