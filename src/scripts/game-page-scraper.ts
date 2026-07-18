@@ -41,44 +41,23 @@ function observeAttribute(
 }
 
 function buildRaRow() {
-	const rowContainer = document.createElement("tr");
+	const raRow = document.createElement("tr");
 
-	// TODO: incorporate logo somehow
-	// const raRowLogo = document.createElement("img");
+	raRow.innerHTML = `
+    <td>RA</td>
+    <td></td>
+    <td>
+      <span style="color: silver">Checking...</span>
+      <div style="float: right; font-size: 90%; padding-top: 2px">
+        <a href="#" class="external" style="display: none">Open in RA</a>
+      </div>
+    </td>
+  `;
 
-	// raRowLogo.src = browser.runtime.getURL("assets/ra-logo.png");
-	// raRowLogo.height = 18;
-	// raRowName.appendChild(raRowLogo);
+	const raStatus = raRow.querySelector("span") as HTMLSpanElement;
+	const raLink = raRow.querySelector("a") as HTMLAnchorElement;
 
-	const rowName = document.createElement("td");
-	rowName.textContent = "RA";
-	rowContainer.appendChild(rowName);
-
-	// empty td for spacing
-	rowContainer.appendChild(document.createElement("td"));
-
-	const rowRight = document.createElement("td");
-
-	const rowStatus = document.createElement("span");
-	rowStatus.textContent = "Checking...";
-	rowStatus.style = "color:silver";
-
-	const rowLinkContainer = document.createElement("div");
-	rowLinkContainer.style = "float: right; font-size: 90%; padding-top: 2px";
-
-	const rowLink = document.createElement("a");
-	rowLink.href = "#";
-	rowLink.textContent = "Open in RA";
-	rowLink.className = "external";
-	rowLink.style = "display:none";
-
-	rowLinkContainer.appendChild(rowLink);
-
-	rowRight.appendChild(rowStatus);
-	rowRight.appendChild(rowLinkContainer);
-	rowContainer.appendChild(rowRight);
-
-	return { raRow: rowContainer, raStatus: rowStatus, raLink: rowLink };
+	return { raRow, raStatus, raLink };
 }
 
 (async () => {
@@ -119,7 +98,7 @@ function buildRaRow() {
 		systemName: string,
 	) {
 		raStatus.textContent = "Checking...";
-		raStatus.style = "color:silver";
+		raStatus.style.cssText = "color: silver";
 
 		try {
 			const { gameId, isSupported } = await browser.runtime.sendMessage<
@@ -132,13 +111,13 @@ function buildRaRow() {
 			});
 
 			raStatus.textContent = isSupported ? "Supported" : "Unsupported";
-			raStatus.style = isSupported ? "color:#FFFF99" : "color:silver";
+			raStatus.style.cssText = isSupported ? "color: #FFFF99" : "color: silver";
 
 			if (gameId !== null) {
-				raLink.style = "";
+				raLink.style.cssText = "";
 				raLink.href = `https://retroachievements.org/game/${gameId}/hashes`;
 			} else {
-				raLink.style = "display:none";
+				raLink.style.cssText = "display: none";
 			}
 		} catch (err) {
 			raStatus.textContent = "Error!";

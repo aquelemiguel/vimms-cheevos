@@ -8,7 +8,10 @@
 	"content_scripts": [
 		{
 			"matches": ["*://vimm.net/*"],
-			"js": ["src/scripts/game-page-scraper.ts"]
+			"js": [
+				"src/scripts/sidebar-settings.ts",
+				"src/scripts/game-page-scraper.ts"
+			]
 		}
 	],
 	"web_accessible_resources": [
