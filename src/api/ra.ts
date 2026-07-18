@@ -35,7 +35,6 @@ export async function searchTitle(query: string, vimmSystem: string) {
 	);
 
 	const payload: RASearchResponse = await res.json();
-	console.log(payload);
 
 	for (const game of payload.results.games) {
 		if (game.system.id === systemId) {

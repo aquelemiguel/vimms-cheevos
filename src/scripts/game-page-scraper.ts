@@ -1,5 +1,8 @@
 import browser from "webextension-polyfill";
-import type { MatchGameMessage } from "../types/messages";
+import type {
+	MatchGameMessageRequest,
+	MatchGameMessageResponse,
+} from "../types/messages";
 
 function observeTextContent(target: Node, cb: (newText: string) => void) {
 	const observer = new MutationObserver(() => {
@@ -24,11 +27,28 @@ function observeTextContent(target: Node, cb: (newText: string) => void) {
 
 	raRow.appendChild(document.createElement("td"));
 
-	const raRowStatus = document.createElement("td");
-	raRowStatus.textContent = "Checking...";
-	raRow.appendChild(raRowStatus);
+	const raRowRight = document.createElement("td");
 
-	document.querySelector(".mainContent tr#row-date")?.before(raRow);
+	const raRowRightValue = document.createElement("span");
+	raRowRightValue.textContent = "Checking...";
+
+	const raRowRightLinkContainer = document.createElement("div");
+	raRowRightLinkContainer.style =
+		"float: right; font-size: 90%; padding-top: 2px";
+
+	const raRowRightLink = document.createElement("a");
+	raRowRightLink.href = "#";
+	raRowRightLink.textContent = "Open in RA";
+	raRowRightLink.className = "external";
+	raRowRightLink.style = "display:none";
+
+	raRowRightLinkContainer.appendChild(raRowRightLink);
+
+	raRowRight.appendChild(raRowRightValue);
+	raRowRight.appendChild(raRowRightLinkContainer);
+	raRow.appendChild(raRowRight);
+
+	document.querySelector(".mainContent tr#row-date")?.after(raRow);
 
 	const header = document.querySelector("main h2 canvas");
 	if (!header) {
@@ -47,14 +67,13 @@ function observeTextContent(target: Node, cb: (newText: string) => void) {
 	}
 
 	const gameTitle = atob(encodedGameTitle);
-	console.log(gameTitle);
 
 	async function checkHashMatch(md5: string) {
-		raRowStatus.textContent = "Checking...";
+		raRowRightValue.textContent = "Checking...";
 
 		const response = await browser.runtime.sendMessage<
-			MatchGameMessage,
-			boolean
+			MatchGameMessageRequest,
+			MatchGameMessageResponse
 		>({
 			type: "MATCH_GAME",
 			title: gameTitle,
@@ -62,7 +81,16 @@ function observeTextContent(target: Node, cb: (newText: string) => void) {
 			md5,
 		});
 
-		raRowStatus.textContent = response ? "Supported" : "Unsupported";
+		raRowRightValue.textContent = response.isSupported
+			? "Supported"
+			: "Unsupported";
+
+		if (response.gameId !== null) {
+			raRowRightLink.style = "";
+			raRowRightLink.href = `https://retroachievements.org/game/${response.gameId}/hashes`;
+		} else {
+			raRowRightLink.style = "display:none";
+		}
 	}
 
 	const md5Hash = document.querySelector(".goodHash #data-md5");
