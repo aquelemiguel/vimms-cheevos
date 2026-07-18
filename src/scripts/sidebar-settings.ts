@@ -15,7 +15,7 @@ function buildVimmDialog(title: string) {
             This extension needs you to bring your own personal Web API key to properly function. You can find it on your <a href="https://retroachievements.org/settings?tab=applications" target="_blank" class="external">RetroAchievements settings page</a>, under the "Applications" section.
           </div>
           <p style="font-size: 90%; color: silver">
-            Your personal key is stored locally and is never sent anywhere except RetroAchievements. All code is open-source and can be found in <a href="https://github.com/aquelemiguel/vimms-cheevos" target="_blank" class="external">GitHub</a>.
+            Your personal key is stored locally and is never sent anywhere except RetroAchievements. All code is open-source and can be found in <a href="https://github.com/aquelemiguel/vimm-cheevos" target="_blank" class="external">GitHub</a>.
           </p>
           <h4 style="color: var(--title-color); margin-bottom: 4px; margin-top: 4px">
             Username
