@@ -1,3 +1,5 @@
+import browser from "webextension-polyfill";
+
 function buildVimmDialog(title: string) {
 	const dialog = document.createElement("dialog");
 	dialog.id = "dialog";
@@ -15,7 +17,14 @@ function buildVimmDialog(title: string) {
           <p style="font-size: 90%; color: silver">
             Your personal key is stored locally and is never sent anywhere except RetroAchievements. All code is open-source and can be found in <a href="https://github.com/aquelemiguel/vimms-cheevos" target="_blank" class="external">GitHub</a>.
           </p>
-          <input type="text" id="raApiKeyInput" placeholder="Enter your API key" style="width: 100%; box-sizing: border-box; margin-top: 8px">
+          <div style="display: flex; gap: 4px">
+            <input type="text" id="raUsernameInput" placeholder="Enter your username" style="width: 100%; box-sizing: border-box; flex: 1" />
+            <button id="raUsernameSave">Save</button>
+          </div>
+          <div style="display: flex; gap: 4px">
+            <input type="text" id="raWebApiKeyInput" placeholder="Enter your API key" style="width: 100%; box-sizing: border-box; flex: 1" />
+            <button id="raWebApiKeySave">Save</button>
+          </div>
         </div>
       </div>
     </div>
@@ -23,6 +32,34 @@ function buildVimmDialog(title: string) {
       <input type="submit" value="Close">
     </form>
   `;
+
+	const raUsernameInput = dialog.querySelector(
+		"#raUsernameInput",
+	) as HTMLInputElement;
+
+	const raUsernameSave = dialog.querySelector(
+		"#raUsernameSave",
+	) as HTMLButtonElement;
+
+	raUsernameSave.addEventListener("click", async () => {
+		await browser.storage.local.set({
+			raUsername: raUsernameInput.value,
+		});
+	});
+
+	const raWebApiKeyInput = dialog.querySelector(
+		"#raWebApiKeyInput",
+	) as HTMLInputElement;
+
+	const raWebApiKeySave = dialog.querySelector(
+		"#raWebApiKeySave",
+	) as HTMLButtonElement;
+
+	raWebApiKeySave.addEventListener("click", async () => {
+		await browser.storage.local.set({
+			raWebApiKey: raWebApiKeyInput.value,
+		});
+	});
 
 	return dialog;
 }
@@ -42,8 +79,31 @@ function buildVimmDialog(title: string) {
 	anchor.textContent = "RA Web API Key";
 	sidebar.appendChild(anchor);
 
-	const raWebApiKeyDialog = buildVimmDialog("RetroAchievements Web API key");
-	document.body.appendChild(raWebApiKeyDialog);
+	const dialog = buildVimmDialog("RetroAchievements Web API key");
+	document.body.appendChild(dialog);
 
-	anchor.addEventListener("click", () => raWebApiKeyDialog.showModal());
+	anchor.addEventListener("click", async () => {
+		const { raUsername, raWebApiKey } = await browser.storage.local.get([
+			"raUsername",
+			"raWebApiKey",
+		]);
+
+		const raUsernameInput = dialog.querySelector(
+			"#raUsernameInput",
+		) as HTMLInputElement;
+
+		if (raUsername) {
+			raUsernameInput.value = raUsername as string;
+		}
+
+		const raWebApiKeyInput = dialog.querySelector(
+			"#raWebApiKeyInput",
+		) as HTMLInputElement;
+
+		if (raWebApiKey) {
+			raWebApiKeyInput.value = raWebApiKey as string;
+		}
+
+		dialog.showModal();
+	});
 })();

@@ -5,6 +5,7 @@
 	"background": {
 		"service_worker": "src/services/ra-client.ts"
 	},
+	"permissions": ["storage"],
 	"content_scripts": [
 		{
 			"matches": ["*://vimm.net/*"],
