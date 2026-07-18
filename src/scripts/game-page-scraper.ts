@@ -111,7 +111,9 @@ function buildRaRow() {
 			});
 
 			raStatus.textContent = isSupported ? "Supported" : "Unsupported";
-			raStatus.style.cssText = isSupported ? "color: #FFFF99" : "color: silver";
+			raStatus.style.cssText = isSupported
+				? "color: var(--title-color)"
+				: "color: silver";
 
 			if (gameId !== null) {
 				raLink.style.cssText = "";

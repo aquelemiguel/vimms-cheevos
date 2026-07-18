@@ -69,7 +69,7 @@ function buildVimmDialog(title: string) {
 	sidebar.appendChild(hr);
 
 	const anchor = document.createElement("a");
-	anchor.href = "#";
+	anchor.href = "javascript:void(0)";
 	anchor.textContent = "RA Web API Key";
 	sidebar.appendChild(anchor);
 
