@@ -1,8 +1,8 @@
 import browser from "webextension-polyfill";
-import { isHashSupported, searchTitle } from "../api/ra";
+import { isVariantSupported, searchTitle } from "../api/ra";
 
 browser.runtime.onMessage.addListener(async (message, sender) => {
-	const gameId = await searchTitle(message.title, message.system);
+	const gameId = await searchTitle(message.gameTitle, message.system);
 	if (!gameId) {
 		return {
 			gameId: null,
@@ -11,7 +11,7 @@ browser.runtime.onMessage.addListener(async (message, sender) => {
 	}
 
 	if (message.type === "MATCH_GAME") {
-		const isSupported = await isHashSupported(gameId, message.md5);
+		const isSupported = await isVariantSupported(gameId, message.gameVariant);
 
 		return {
 			gameId,

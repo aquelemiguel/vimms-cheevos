@@ -9,12 +9,12 @@ function getAuthObject() {
 	});
 }
 
-export async function isHashSupported(gameId: number, hash: string) {
+export async function isVariantSupported(gameId: number, gameVariant: string) {
 	const authorization = getAuthObject();
 	const hashes = await getGameHashes(authorization, { gameId });
 
 	for (const result of hashes.results) {
-		if (result.md5 === hash) {
+		if (result.name === gameVariant) {
 			return true;
 		}
 	}

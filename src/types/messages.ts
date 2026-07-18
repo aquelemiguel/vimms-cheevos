@@ -1,8 +1,8 @@
 export interface MatchGameMessageRequest {
 	type: "MATCH_GAME";
-	title: string;
+	gameTitle: string;
+	gameVariant: string;
 	system: string;
-	md5: string;
 }
 
 export interface MatchGameMessageResponse {

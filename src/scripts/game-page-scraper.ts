@@ -4,15 +4,33 @@ import type {
 	MatchGameMessageResponse,
 } from "../types/messages";
 
-function observeTextContent(target: Node, cb: (newText: string) => void) {
-	const observer = new MutationObserver(() => {
-		cb(target.textContent ?? "");
+function decodeTitleFromDataV(el: Element) {
+	const encodedTitle = el.getAttribute("data-v");
+	if (!encodedTitle) {
+		return null;
+	}
+	return atob(encodedTitle);
+}
+
+function observeAttribute(
+	target: Element,
+	attrName: string,
+	cb: (newValue: string | null) => void,
+) {
+	const observer = new MutationObserver((mutations) => {
+		for (const mutation of mutations) {
+			if (
+				mutation.type === "attributes" &&
+				mutation.attributeName === attrName
+			) {
+				cb(target.getAttribute(attrName));
+			}
+		}
 	});
 
 	observer.observe(target, {
-		characterData: true,
-		childList: true,
-		subtree: true,
+		attributes: true,
+		attributeFilter: [attrName],
 	});
 
 	return () => observer.disconnect();
@@ -55,20 +73,22 @@ function observeTextContent(target: Node, cb: (newText: string) => void) {
 		return;
 	}
 
-	const encodedGameTitle = header.getAttribute("data-v");
-	// TODO: if cannot find, try scraping the filename
-	if (!encodedGameTitle) {
+	const gameTitle = decodeTitleFromDataV(header);
+	// without game title we cannot get the RA ID for the game
+	if (!gameTitle) {
 		return;
 	}
 
-	const systemTitle = document.querySelector("main .sectionTitle");
+	const systemTitle = document.querySelector("main .sectionTitle")?.textContent;
 	if (!systemTitle) {
 		return;
 	}
 
-	const gameTitle = atob(encodedGameTitle);
-
-	async function checkHashMatch(md5: string) {
+	async function checkVariantMatch(
+		gameTitle: string,
+		gameVariant: string,
+		systemTitle: string,
+	) {
 		raRowRightValue.textContent = "Checking...";
 
 		const response = await browser.runtime.sendMessage<
@@ -76,9 +96,9 @@ function observeTextContent(target: Node, cb: (newText: string) => void) {
 			MatchGameMessageResponse
 		>({
 			type: "MATCH_GAME",
-			title: gameTitle,
-			system: systemTitle?.textContent ?? "",
-			md5,
+			gameTitle,
+			gameVariant,
+			system: systemTitle,
 		});
 
 		raRowRightValue.textContent = response.isSupported
@@ -93,13 +113,22 @@ function observeTextContent(target: Node, cb: (newText: string) => void) {
 		}
 	}
 
-	const md5Hash = document.querySelector(".goodHash #data-md5");
-	if (!md5Hash) {
+	const gameVariantEl = document.querySelector("#data-good-title > #canvas2");
+	if (!gameVariantEl) {
 		return;
 	}
 
-	checkHashMatch(md5Hash.textContent);
-	observeTextContent(md5Hash, checkHashMatch);
+	const initialRun = gameVariantEl.getAttribute("data-v");
+	if (initialRun) {
+		checkVariantMatch(gameTitle, atob(initialRun), systemTitle);
+	}
+
+	observeAttribute(gameVariantEl, "data-v", (newValue) => {
+		if (!newValue) {
+			return;
+		}
+		checkVariantMatch(gameTitle, atob(newValue), systemTitle);
+	});
 
 	// TODO: incorporate logo somehow
 	// const raRowLogo = document.createElement("img");
