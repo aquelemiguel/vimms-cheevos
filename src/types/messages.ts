@@ -2,7 +2,7 @@ export interface MatchGameMessageRequest {
 	type: "MATCH_GAME";
 	gameTitle: string;
 	gameVariant: string;
-	system: string;
+	systemName: string;
 }
 
 export interface MatchGameMessageResponse {

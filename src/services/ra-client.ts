@@ -2,7 +2,7 @@ import browser from "webextension-polyfill";
 import { isVariantSupported, searchTitle } from "../api/ra";
 
 browser.runtime.onMessage.addListener(async (message, sender) => {
-	const gameId = await searchTitle(message.gameTitle, message.system);
+	const gameId = await searchTitle(message.gameTitle, message.systemName);
 	if (!gameId) {
 		return {
 			gameId: null,
