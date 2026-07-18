@@ -1,13 +1,13 @@
 import browser from "webextension-polyfill";
 
-function buildVimmDialog(title: string) {
+export async function buildVimmDialog() {
 	const dialog = document.createElement("dialog");
-	dialog.id = "dialog";
+	dialog.id = "raDialog";
 	dialog.style.cssText =
 		"border: 0px; padding: 0px; background-color: transparent; cursor: auto;";
 
 	dialog.innerHTML = `
-    <div style="text-align: center; font-size: 14pt">${title}</div>
+    <div style="text-align: center; font-size: 14pt">RetroAchievements Web API key</div>
     <div class="rounded" style="min-width: 420px; min-height: 50px; padding: 10px">
       <div style="min-width:320px; max-width:640px; overflow:auto">
         <div style="max-height: 80vh">
@@ -33,9 +33,26 @@ function buildVimmDialog(title: string) {
     </form>
   `;
 
+	const { raUsername, raWebApiKey } = await browser.storage.local.get([
+		"raUsername",
+		"raWebApiKey",
+	]);
+
 	const raUsernameInput = dialog.querySelector(
 		"#raUsernameInput",
 	) as HTMLInputElement;
+
+	if (raUsername) {
+		raUsernameInput.value = raUsername as string;
+	}
+
+	const raWebApiKeyInput = dialog.querySelector(
+		"#raWebApiKeyInput",
+	) as HTMLInputElement;
+
+	if (raWebApiKey) {
+		raWebApiKeyInput.value = raWebApiKey as string;
+	}
 
 	raUsernameInput.addEventListener("change", async () => {
 		// TODO: add a debounce here
@@ -43,10 +60,6 @@ function buildVimmDialog(title: string) {
 			raUsername: raUsernameInput.value,
 		});
 	});
-
-	const raWebApiKeyInput = dialog.querySelector(
-		"#raWebApiKeyInput",
-	) as HTMLInputElement;
 
 	raWebApiKeyInput.addEventListener("change", async () => {
 		// TODO: add a debounce here
@@ -57,47 +70,3 @@ function buildVimmDialog(title: string) {
 
 	return dialog;
 }
-
-(() => {
-	const sidebar = document.getElementById("mainMenu");
-	if (!sidebar) {
-		return;
-	}
-
-	const hr = document.createElement("div");
-	hr.innerHTML = `<hr>`;
-	sidebar.appendChild(hr);
-
-	const anchor = document.createElement("a");
-	anchor.href = "javascript:void(0)";
-	anchor.textContent = "RA Web API Key";
-	sidebar.appendChild(anchor);
-
-	const dialog = buildVimmDialog("RetroAchievements Web API key");
-	document.body.appendChild(dialog);
-
-	anchor.addEventListener("click", async () => {
-		const { raUsername, raWebApiKey } = await browser.storage.local.get([
-			"raUsername",
-			"raWebApiKey",
-		]);
-
-		const raUsernameInput = dialog.querySelector(
-			"#raUsernameInput",
-		) as HTMLInputElement;
-
-		if (raUsername) {
-			raUsernameInput.value = raUsername as string;
-		}
-
-		const raWebApiKeyInput = dialog.querySelector(
-			"#raWebApiKeyInput",
-		) as HTMLInputElement;
-
-		if (raWebApiKey) {
-			raWebApiKeyInput.value = raWebApiKey as string;
-		}
-
-		dialog.showModal();
-	});
-})();

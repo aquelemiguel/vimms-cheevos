@@ -1,4 +1,5 @@
 import browser from "webextension-polyfill";
+import { buildVimmDialog } from "../components/dialog";
 import type {
 	MatchGameMessageRequest,
 	MatchGameMessageResponse,
@@ -111,7 +112,7 @@ function buildRaRow() {
 			});
 
 			if (response.isMissingAuth) {
-				raStatus.textContent = "Missing/invalid RA config!";
+				raStatus.textContent = "Missing RA config!";
 				return;
 			}
 
@@ -129,7 +130,15 @@ function buildRaRow() {
 				raLink.style.cssText = "display: none";
 			}
 		} catch (err) {
-			raStatus.textContent = "Error!";
+			raStatus.innerHTML = `
+				<span style="margin-right: 2px">Error!</span>
+				<a id="openSettings" href="javascript:void(0)" class="external" />
+			`;
+
+			document.getElementById("openSettings")?.addEventListener("click", () => {
+				(document.getElementById("raDialog") as HTMLDialogElement).showModal();
+			});
+
 			console.error("RA match check failed:", err);
 		}
 	}

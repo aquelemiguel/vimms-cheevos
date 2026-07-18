@@ -9,18 +9,8 @@
 	"content_scripts": [
 		{
 			"matches": ["*://vimm.net/*"],
-			"js": [
-				"src/scripts/sidebar-settings.ts",
-				"src/scripts/game-page-scraper.ts"
-			]
+			"js": ["src/scripts/sidebar.ts", "src/scripts/game-page.ts"]
 		}
 	],
-	"web_accessible_resources": [
-		{
-			"resources": ["assets/ra-logo.png"],
-			"matches": ["*://vimm.net/*"]
-		}
-	],
-	"host_permissions": ["https://retroachievements.org/*"],
-	"options_page": "src/options.html"
+	"host_permissions": ["https://retroachievements.org/*"]
 }
