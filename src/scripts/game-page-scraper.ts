@@ -1,6 +1,21 @@
 import browser from "webextension-polyfill";
+import type { MatchGameMessage } from "../types/messages";
 
 (async () => {
+	const raRow = document.createElement("tr");
+
+	const raRowName = document.createElement("td");
+	raRowName.textContent = "RA";
+	raRow.appendChild(raRowName);
+
+	raRow.appendChild(document.createElement("td"));
+
+	const raRowStatus = document.createElement("td");
+	raRowStatus.textContent = "Checking...";
+	raRow.appendChild(raRowStatus);
+
+	document.querySelector(".mainContent tr#row-date")?.before(raRow);
+
 	const header = document.querySelector("main h2 canvas");
 	if (!header) {
 		return;
@@ -25,19 +40,16 @@ import browser from "webextension-polyfill";
 		return;
 	}
 
-	const response = await browser.runtime.sendMessage({
-		type: "MATCH_GAME", // TODO: type this later on
-		title: gameTitle,
-		system: systemTitle,
-		md5: md5Hash.textContent,
-	});
+	const response = await browser.runtime.sendMessage<MatchGameMessage, boolean>(
+		{
+			type: "MATCH_GAME",
+			title: gameTitle,
+			system: systemTitle.textContent,
+			md5: md5Hash.textContent,
+		},
+	);
 
-	console.log(`response from worker: ${response}`);
-
-	const raRow = document.createElement("tr");
-
-	// TODO: use an anchor link here to point to matched guide
-	const raRowName = document.createElement("td");
+	raRowStatus.textContent = response ? "Supported" : "Unsupported";
 
 	// TODO: incorporate logo somehow
 	// const raRowLogo = document.createElement("img");
@@ -45,20 +57,4 @@ import browser from "webextension-polyfill";
 	// raRowLogo.src = browser.runtime.getURL("assets/ra-logo.png");
 	// raRowLogo.height = 18;
 	// raRowName.appendChild(raRowLogo);
-	raRowName.textContent = "RA";
-
-	const raRowEmpty = document.createElement("td");
-
-	const raRowStatus = document.createElement("td");
-	raRowStatus.textContent = response ? "Supported" : "Unsupported";
-
-	raRow.appendChild(raRowName);
-	raRow.appendChild(raRowEmpty);
-	raRow.appendChild(raRowStatus);
-
-	const verifiedRow = document
-		.querySelector(".mainContent tr#row-date")
-		?.before(raRow);
-
-	console.log(verifiedRow);
 })();

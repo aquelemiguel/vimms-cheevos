@@ -1,4 +1,4 @@
-export const VimmRASystemMap = {
+const VimmRASystemMap = {
 	"Atari 2600": 25,
 	"Atari 5200": 50,
 	Nintendo: 7,
@@ -35,3 +35,10 @@ export const VimmRASystemMap = {
 	"PlayStation Portable": 41,
 	"Nintendo 3DS": 62,
 } satisfies Record<string, number | null>;
+
+export function getRASystemId(vimmSystem: string): number | null {
+	if (vimmSystem in VimmRASystemMap) {
+		return VimmRASystemMap[vimmSystem as keyof typeof VimmRASystemMap];
+	}
+	return null;
+}

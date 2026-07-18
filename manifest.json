@@ -17,5 +17,6 @@
 			"matches": ["*://vimm.net/*"]
 		}
 	],
+	"host_permissions": ["https://retroachievements.org/*"],
 	"options_page": "src/options.html"
 }
