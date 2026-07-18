@@ -17,14 +17,14 @@ function buildVimmDialog(title: string) {
           <p style="font-size: 90%; color: silver">
             Your personal key is stored locally and is never sent anywhere except RetroAchievements. All code is open-source and can be found in <a href="https://github.com/aquelemiguel/vimms-cheevos" target="_blank" class="external">GitHub</a>.
           </p>
-          <div style="display: flex; gap: 4px">
-            <input type="text" id="raUsernameInput" placeholder="Enter your username" style="width: 100%; box-sizing: border-box; flex: 1" />
-            <button id="raUsernameSave">Save</button>
-          </div>
-          <div style="display: flex; gap: 4px">
-            <input type="text" id="raWebApiKeyInput" placeholder="Enter your API key" style="width: 100%; box-sizing: border-box; flex: 1" />
-            <button id="raWebApiKeySave">Save</button>
-          </div>
+          <h4 style="color: var(--title-color); margin-bottom: 4px; margin-top: 4px">
+            Username
+          </h4>
+          <input type="text" id="raUsernameInput" placeholder="Enter your username" style="width: 100%; box-sizing: border-box; flex: 1" />
+          <h4 style="color: var(--title-color); margin-bottom: 4px; margin-top: 12px">
+            Web API Key
+          </h4>
+          <input type="text" id="raWebApiKeyInput" placeholder="Enter your API key" style="width: 100%; box-sizing: border-box; flex: 1" />
         </div>
       </div>
     </div>
@@ -37,11 +37,8 @@ function buildVimmDialog(title: string) {
 		"#raUsernameInput",
 	) as HTMLInputElement;
 
-	const raUsernameSave = dialog.querySelector(
-		"#raUsernameSave",
-	) as HTMLButtonElement;
-
-	raUsernameSave.addEventListener("click", async () => {
+	raUsernameInput.addEventListener("change", async () => {
+		// TODO: add a debounce here
 		await browser.storage.local.set({
 			raUsername: raUsernameInput.value,
 		});
@@ -51,11 +48,8 @@ function buildVimmDialog(title: string) {
 		"#raWebApiKeyInput",
 	) as HTMLInputElement;
 
-	const raWebApiKeySave = dialog.querySelector(
-		"#raWebApiKeySave",
-	) as HTMLButtonElement;
-
-	raWebApiKeySave.addEventListener("click", async () => {
+	raWebApiKeyInput.addEventListener("change", async () => {
+		// TODO: add a debounce here
 		await browser.storage.local.set({
 			raWebApiKey: raWebApiKeyInput.value,
 		});
