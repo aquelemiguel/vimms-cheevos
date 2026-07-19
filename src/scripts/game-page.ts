@@ -1,5 +1,4 @@
 import browser from "webextension-polyfill";
-import { buildVimmDialog } from "../components/dialog";
 import type {
 	MatchGameMessageRequest,
 	MatchGameMessageResponse,
@@ -50,7 +49,7 @@ function buildRaRow() {
     <td>
       <span style="color: silver">Checking...</span>
       <div style="float: right; font-size: 90%; padding-top: 2px">
-        <a href="#" class="external" style="display: none">Open in RA</a>
+        <a href="#" class="external" style="display: none">Open RA</a>
       </div>
     </td>
   `;
@@ -130,15 +129,7 @@ function buildRaRow() {
 				raLink.style.cssText = "display: none";
 			}
 		} catch (err) {
-			raStatus.innerHTML = `
-				<span style="margin-right: 2px">Error!</span>
-				<a id="openSettings" href="javascript:void(0)" class="external" />
-			`;
-
-			document.getElementById("openSettings")?.addEventListener("click", () => {
-				(document.getElementById("raDialog") as HTMLDialogElement).showModal();
-			});
-
+			raStatus.textContent = "Error";
 			console.error("RA match check failed:", err);
 		}
 	}
