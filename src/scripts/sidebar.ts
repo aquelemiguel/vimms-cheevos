@@ -12,7 +12,7 @@ import { buildVimmDialog } from "../components/dialog";
 
 	const anchor = document.createElement("a");
 	anchor.href = "javascript:void(0)";
-	anchor.textContent = "RA Web API Key";
+	anchor.textContent = "Vimm's Cheevos";
 	sidebar.appendChild(anchor);
 
 	const dialog = await buildVimmDialog();

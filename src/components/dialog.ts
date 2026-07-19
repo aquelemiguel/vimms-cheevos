@@ -7,25 +7,45 @@ export async function buildVimmDialog() {
 		"border: 0px; padding: 0px; background-color: transparent; cursor: auto;";
 
 	dialog.innerHTML = `
-    <div style="text-align: center; font-size: 14pt">RetroAchievements Web API key</div>
+    <div style="text-align: center; font-size: 14pt">Vimm's Cheevos</div>
     <div class="rounded" style="min-width: 420px; min-height: 50px; padding: 10px">
       <div style="min-width:320px; max-width:640px; overflow:auto">
         <div style="max-height: 80vh">
+					<h3 style="color: var(--title-color); margin-bottom: 8px; margin-top: 0px">
+            Configuration
+          </h3>
           <div>
             This extension needs you to bring your own personal Web API key to properly function. You can find it on your <a href="https://retroachievements.org/settings?tab=applications" target="_blank" class="external">RetroAchievements settings page</a>, under the "Applications" section.
           </div>
-          <p style="font-size: 90%; color: silver">
+          <p style="font-size: 90%; color: silver; margin-top: 8px; margin-bottom: 12px">
             Your personal key is stored locally and is never sent anywhere except RetroAchievements. All code is open-source and can be found in <a href="https://github.com/aquelemiguel/vimms-cheevos" target="_blank" class="external">GitHub</a>.
           </p>
-          <h4 style="color: var(--title-color); margin-bottom: 4px; margin-top: 4px">
+          <h4 style="margin-bottom: 4px; margin-top: 4px">
             Username
           </h4>
           <input type="text" id="raUsernameInput" placeholder="Enter your username" style="width: 100%; box-sizing: border-box; flex: 1" />
-          <h4 style="color: var(--title-color); margin-bottom: 4px; margin-top: 12px">
+          <h4 style="margin-bottom: 4px; margin-top: 12px">
             Web API Key
           </h4>
           <input type="text" id="raWebApiKeyInput" placeholder="Enter your API key" style="width: 100%; box-sizing: border-box; flex: 1" />
         </div>
+				<h3 style="color: var(--title-color); margin-bottom: 6px; margin-top: 16px">
+					About
+				</h3>
+				<div>
+					<div style="margin: 0">
+						Vimm's Cheevos v${browser.runtime.getManifest().version}
+					</div>
+					<div style="font-size: 80%; color: silver">
+						Unofficial extension, not affiliated with Vimm's Lair or RetroAchievements.
+					</div>
+					<div style="font-size: 90%; margin-top: 8px">
+						Source code: <a href="https://github.com/aquelemiguel/vimms-cheevos" target="_blank" class="external">GitHub</a>
+					</div>
+					<div style="font-size: 90%">
+						Email me: <a href="mailto:hi@mano.sh">hi@mano.sh</a>
+					</div>
+				</div>
       </div>
     </div>
     <form method="dialog" style="text-align: center; margin-top: 4px">
