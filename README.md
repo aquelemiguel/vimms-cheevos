@@ -1,6 +1,6 @@
 # Vimm's Cheevos
 
-A cross-browser extension for validating [Vimm's Lair](https://vimm.net/) games against [RetroAchievements](https://retroachievements.org/) supported game hashes.
+A cross-browser extension that checks whether a game file hosted on [Vimm's Lair](https://vimm.net/) is supported by [RetroAchievements](https://retroachievements.org/), matching files names using the No-Intro (cartridge-based systems) and Redump (disc-based systems) naming both sites share.
 
 https://github.com/user-attachments/assets/c24849e6-5f24-4c0b-93a6-1d054bfe7dd3
 
@@ -21,13 +21,11 @@ Check out the [Releases](https://github.com/aquelemiguel/vimms-cheevos/releases/
 2. Click **Load Temporary Add-on...**
 3. Select the `manifest.json` file inside the extracted folder
 
-## RetroAchievements Web API key
+#### RetroAchievements Web API key
 
-This extension expects you have signed up for a RetroAchievements account as you'll need to provide your username and personal Web API key. This is because RA's API is designed around per-user keys and there's rate limiting enabled.
+This extension expects you have signed up for a RetroAchievements account as you'll need to provide your username and personal Web API key, because RA's API is designed around per-user keys and there's rate limiting in place. Read more about [API access](https://api-docs.retroachievements.org/#api-access) in the RA API docs.
 
-Read more about [API access](https://api-docs.retroachievements.org/#api-access) in the RA API docs.
-
-Your key is stored in your machine's local storage area (and not in the `localStorage` Window interface), so your key is not vulnerable to XSS attacks. Your key is never sent anywhere except to RetroAchievements.
+Your key is safely stored in your machine's [local storage area](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local). Your key is never sent anywhere except to RetroAchievements.
 
 ## Usage
 
@@ -52,7 +50,7 @@ Issues and pull requests are welcome. If you run into a game that reports incorr
 
 ## Disclaimer
 
-This project is not affiliated with Vimm's Lair or RetroAchievements. It simply cross-references publicly available data to help users decide about ROM compatibility with the RetroAchievements service.
+This project is not affiliated with Vimm's Lair or RetroAchievements. It simply cross-references publicly available data.
 
 ## License
 
