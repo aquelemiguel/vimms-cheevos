@@ -4,6 +4,59 @@ A cross-browser extension for validating [Vimm's Lair](https://vimm.net/) games 
 
 https://github.com/user-attachments/assets/c24849e6-5f24-4c0b-93a6-1d054bfe7dd3
 
+## Installation
+
+Check out the [Releases](https://github.com/aquelemiguel/vimms-cheevos/releases/latest) tab, download and extract the respective version for your browser.
+
+### For Chromium-based browsers
+
+1. Navigate to `chrome://extensions`
+2. Enable **Developer mode** in the top-right
+3. Click **Load unpacked**
+4. Select the extracted folder
+
+### For Firefox and their forks
+
+1. Navigate to `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on...**
+3. Select the `manifest.json` file inside the extracted folder
+
+## RetroAchievements Web API key
+
+This extension expects you have signed up for a RetroAchievements account as you'll need to provide your username and personal Web API key. This is because RA's API is designed around per-user keys and there's rate limiting enabled.
+
+Read more about [API access](https://api-docs.retroachievements.org/#api-access) in the RA API docs.
+
+Your key is stored in your machine's local storage area (and not in the `localStorage` Window interface), so your key is not vulnerable to XSS attacks. Your key is never sent anywhere except to RetroAchievements.
+
+## Usage
+
+1. After installing via the steps above, open [Vimm's Lair](https://vimm.net/).
+2. A new button is injected to the sidebar and clicking it opens a settings dialog for the extension.
+3. Follow the instructions on screen - provide your RA username and personal Web API key.  
+   As you type, the extension saves automatically.
+5. Close the dialog and refresh.
+6. Opening a game page should now show whether that specific variant is supported by RA.
+
+<img width="392" height="247" alt="image" src="https://github.com/user-attachments/assets/bb22a9de-95e2-40fd-8b9d-461be1eff34e" />
+
+<img width="392" height="247" alt="image" src="https://github.com/user-attachments/assets/d024fdb4-7c93-45b1-b8f5-6986fe47fc98" />
+
+<img width="392" height="247" alt="image" src="https://github.com/user-attachments/assets/d18f9df1-2677-463d-b366-46f9bc223c43" />
+
+<img width="392" height="247" alt="image" src="https://github.com/user-attachments/assets/ca1702d6-fddf-4e2f-922c-dce003b29183" />
+
+## Contributing
+
+Issues and pull requests are welcome. If you run into a game that reports incorrectly, please open an issue with the game page URL and platform. There are some known issues with specific platforms/titles and after testing I'll write up a new section.
+
+## Disclaimer
+
+This project is not affiliated with Vimm's Lair or RetroAchievements. It simply cross-references publicly available data to help users decide about ROM compatibility with the RetroAchievements service.
+
+## License
+
+MIT
 
 
 
