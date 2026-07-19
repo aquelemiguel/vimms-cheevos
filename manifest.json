@@ -3,7 +3,8 @@
 	"version": "1.0.0",
 	"manifest_version": 3,
 	"background": {
-		"service_worker": "src/services/ra-client.ts"
+		"{{chrome}}.service_worker": "src/services/ra-client.ts",
+		"{{firefox}}.scripts": ["src/services/ra-client.ts"]
 	},
 	"permissions": ["storage"],
 	"content_scripts": [

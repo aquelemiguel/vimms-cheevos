@@ -2,7 +2,11 @@ import { defineConfig } from "vite";
 import webExtension from "vite-plugin-web-extension";
 
 export default defineConfig({
-	plugins: [webExtension()],
+	plugins: [
+		webExtension({
+			browser: process.env.TARGET || "chrome",
+		}),
+	],
 	define: {
 		"process.env": {},
 	},
