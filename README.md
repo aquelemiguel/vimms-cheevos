@@ -46,7 +46,7 @@ Your key is safely stored in your machine's [local storage area](https://develop
 
 ## Contributing
 
-Issues and pull requests are welcome. If you run into a game that reports incorrectly, please open an issue with the game page URL and platform. There are some known issues with specific platforms/titles and after testing I'll write up a new section.
+Issues and pull requests are welcome. If you run into a game that reports incorrectly or a system that isn't working as expected, please open an issue with the game page URL and platform.
 
 ## Disclaimer
 
