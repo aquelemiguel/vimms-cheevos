@@ -23,9 +23,9 @@ Check out the [Releases](https://github.com/aquelemiguel/vimms-cheevos/releases/
 
 #### RetroAchievements Web API key
 
-This extension expects you have signed up for a RetroAchievements account as you'll need to provide your username and personal Web API key, because RA's API is designed around per-user keys and there's rate limiting in place. Read more about [API access](https://api-docs.retroachievements.org/#api-access) in the RA API docs.
+This extension expects you have signed up for a RetroAchievements account as you'll need to provide your username and personal Web API key. This is because RA's API is designed around per-user keys and there's rate limiting in place. Read more about RA's [API access](https://api-docs.retroachievements.org/#api-access).
 
-Your key is safely stored in your machine's [local storage area](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local). Your key is never sent anywhere except to RetroAchievements.
+Your key is safely stored. Your key is never sent anywhere except to RetroAchievements.
 
 ## Usage
 
