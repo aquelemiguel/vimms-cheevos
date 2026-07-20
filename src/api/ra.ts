@@ -32,7 +32,9 @@ export async function isVariantSupported(
 	const hashes = await getGameHashes(authorization, { gameId });
 
 	for (const result of hashes.results) {
-		if (result.name === gameVariant) {
+		// TODO: perhaps add a normalization function here that parses a
+		// game file name into chunks (title, region, revision, lang, ...)
+		if (result.name.toLowerCase() === gameVariant.toLowerCase()) {
 			return true;
 		}
 	}
