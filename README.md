@@ -1,5 +1,11 @@
 # Vimm's Cheevos
 
+![Latest release](https://img.shields.io/github/v/release/aquelemiguel/vimms-cheevos?style=for-the-badge&color=blue&logo=github)
+![Downloads](https://img.shields.io/github/downloads/aquelemiguel/vimms-cheevos/total?style=for-the-badge&color=success&logo=github)
+![Stars](https://img.shields.io/github/stars/aquelemiguel/vimms-cheevos?style=for-the-badge&color=yellow&logo=github)
+![Issues](https://img.shields.io/github/issues/aquelemiguel/vimms-cheevos?style=for-the-badge&color=orange)
+![License](https://img.shields.io/github/license/aquelemiguel/vimms-cheevos?style=for-the-badge&color=lightgrey)
+
 A cross-browser extension that checks whether a game file hosted on [Vimm's Lair](https://vimm.net/) is supported by [RetroAchievements](https://retroachievements.org/), matching files names using the No-Intro (cartridge-based systems) and Redump (disc-based systems) naming both sites share.
 
 https://github.com/user-attachments/assets/c24849e6-5f24-4c0b-93a6-1d054bfe7dd3
