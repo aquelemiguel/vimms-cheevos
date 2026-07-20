@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill";
-import { getAuthorization, isVariantSupported, searchTitle } from "../api/ra";
+import { getAuthorization, isGameFileSupported, searchTitle } from "../api/ra";
 import { getRASystem } from "../constants/systems";
 import type { MatchGameMessageRequest } from "../types/messages";
 import type { VimmSystem } from "../types/vimm";
@@ -36,7 +36,7 @@ browser.runtime.onMessage.addListener(async (m) => {
 		return { type: "missingAuth" };
 	}
 
-	const system = getRASystem(message.systemName);
+	const system = getRASystem(message.system);
 	if (system === null || system.id === null) {
 		return { type: "unsupportedSystem" };
 	}
@@ -44,24 +44,25 @@ browser.runtime.onMessage.addListener(async (m) => {
 		return { type: "inactiveSystem" };
 	}
 
-	let normalizedTitle = message.gameVariant;
+	let normalizedTitle = message.game.fileName;
 
-	if (message.systemName in titleTransforms) {
-		const transform = titleTransforms[message.systemName];
+	if (message.game.fileName in titleTransforms) {
+		const transform = titleTransforms[message.system];
 		if (transform) {
 			normalizedTitle = transform(normalizedTitle);
 		}
 	}
 
-	const gameId = await searchTitle(message.gameTitle, system.id);
+	const gameId = await searchTitle(message.game.title, system.id);
 	if (!gameId) {
 		return { type: "notFound" };
 	}
 
-	const isSupported = await isVariantSupported(
+	const isSupported = await isGameFileSupported(
 		authorization,
 		gameId,
 		normalizedTitle,
+		message.game.md5,
 	);
 	return { type: "success", gameId, isSupported };
 });

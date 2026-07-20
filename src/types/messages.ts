@@ -1,9 +1,12 @@
 import type { VimmSystem } from "./vimm";
 
 export type MatchGameMessageRequest = {
-	gameTitle: string;
-	gameVariant: string;
-	systemName: VimmSystem;
+	system: VimmSystem;
+	game: {
+		title: string;
+		fileName: string;
+		md5?: string;
+	};
 };
 
 export type MatchGameMessageResponse =

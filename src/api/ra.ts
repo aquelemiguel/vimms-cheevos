@@ -24,17 +24,21 @@ export async function getAuthorization() {
 	});
 }
 
-export async function isVariantSupported(
+export async function isGameFileSupported(
 	authorization: AuthObject,
 	gameId: number,
-	gameVariant: string,
+	fileName: string,
+	md5?: string,
 ) {
 	const hashes = await getGameHashes(authorization, { gameId });
 
 	for (const result of hashes.results) {
-		// TODO: perhaps add a normalization function here that parses a
-		// game file name into chunks (title, region, revision, lang, ...)
-		if (result.name.toLowerCase() === gameVariant.toLowerCase()) {
+		if (
+			// should be fool-proof for cartridge-based systems
+			result.md5 === md5 ||
+			// x-match no-intro/redump naming
+			result.name.toLowerCase() === fileName.toLowerCase()
+		) {
 			return true;
 		}
 	}
@@ -48,10 +52,9 @@ export async function searchTitle(query: string, systemId: number) {
 			method: "GET",
 		},
 	);
+	const payload: RASearchResponse = await res.json();
 
 	const normalizedQuery = query.trim().toLowerCase();
-
-	const payload: RASearchResponse = await res.json();
 
 	// in RAWeb, exactness is underneath popularity score but we need exactness first,
 	// otherwise e.g., q="Mega Man" outputs MMX (SNES) and MM2 (NES) before MM (NES)

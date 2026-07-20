@@ -68,9 +68,9 @@ function buildRaRow() {
 		return;
 	}
 
-	const gameVariantEl = document.querySelector("#data-good-title > #canvas2");
-	if (!gameVariantEl) {
-		console.error("Failed to scrape game variant");
+	const fileNameEl = document.querySelector("#data-good-title > #canvas2");
+	if (!fileNameEl) {
+		console.error("Failed to scrape game file name");
 		return;
 	}
 
@@ -97,10 +97,9 @@ function buildRaRow() {
 		return;
 	}
 
-	async function checkVariantMatch(
-		gameTitle: string,
-		gameVariant: string,
-		systemName: VimmSystem,
+	async function checkFileNameMatch(
+		system: MatchGameMessageRequest["system"],
+		game: MatchGameMessageRequest["game"],
 	) {
 		raStatus.textContent = "Checking...";
 		raStatus.style.cssText = "color: silver";
@@ -109,11 +108,7 @@ function buildRaRow() {
 			const response = await browser.runtime.sendMessage<
 				MatchGameMessageRequest,
 				MatchGameMessageResponse
-			>({
-				gameTitle,
-				gameVariant,
-				systemName,
-			});
+			>({ game, system });
 
 			if (response.type === "missingAuth") {
 				raStatus.textContent = "Missing RA config!";
@@ -150,17 +145,27 @@ function buildRaRow() {
 		}
 	}
 
-	const initialVariant = gameVariantEl.getAttribute("data-v");
-	if (initialVariant) {
-		checkVariantMatch(gameTitle, atob(initialVariant), systemName);
+	const initialFileName = fileNameEl.getAttribute("data-v");
+	const md5 = document.getElementById("data-md5")?.textContent;
+
+	if (initialFileName) {
+		checkFileNameMatch(systemName, {
+			title: gameTitle,
+			fileName: atob(initialFileName),
+			md5,
+		});
 	}
 
-	observeAttribute(gameVariantEl, "data-v", (raw) => {
+	observeAttribute(fileNameEl, "data-v", (raw) => {
 		if (!raw) {
 			return;
 		}
 		try {
-			checkVariantMatch(gameTitle, atob(raw), systemName);
+			checkFileNameMatch(systemName, {
+				title: gameTitle,
+				fileName: atob(raw),
+				md5,
+			});
 		} catch {
 			// malformed data-v, ignoring...
 		}
