@@ -44,12 +44,12 @@ browser.runtime.onMessage.addListener(async (m) => {
 		return { type: "inactiveSystem" };
 	}
 
-	let normalizedTitle = message.game.fileName;
+	let normalizedFileName = message.game.fileName;
 
-	if (message.game.fileName in titleTransforms) {
+	if (message.system in titleTransforms) {
 		const transform = titleTransforms[message.system];
 		if (transform) {
-			normalizedTitle = transform(normalizedTitle);
+			normalizedFileName = transform(normalizedFileName);
 		}
 	}
 
@@ -61,7 +61,7 @@ browser.runtime.onMessage.addListener(async (m) => {
 	const isSupported = await isGameFileSupported(
 		authorization,
 		gameId,
-		normalizedTitle,
+		normalizedFileName,
 		message.game.md5,
 	);
 	return { type: "success", gameId, isSupported };
