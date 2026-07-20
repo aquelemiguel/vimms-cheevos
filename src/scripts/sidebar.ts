@@ -1,3 +1,4 @@
+import browser from "webextension-polyfill";
 import { buildVimmDialog } from "../components/dialog";
 
 (async () => {
@@ -6,13 +7,19 @@ import { buildVimmDialog } from "../components/dialog";
 		return;
 	}
 
+	const { name, version } = browser.runtime.getManifest();
+	const { latestVersion } = await browser.storage.local.get("latestVersion");
+
+	const sidebarTitle =
+		latestVersion === version ? name : `${name} (Update available)`;
+
 	const hr = document.createElement("div");
 	hr.innerHTML = `<hr>`;
 	sidebar.appendChild(hr);
 
 	const anchor = document.createElement("a");
 	anchor.href = "javascript:void(0)";
-	anchor.textContent = "Vimm's Cheevos";
+	anchor.textContent = sidebarTitle;
 	sidebar.appendChild(anchor);
 
 	const dialog = await buildVimmDialog();

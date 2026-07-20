@@ -64,26 +64,22 @@ function buildRaRow() {
 (async () => {
 	const header = document.querySelector("main h2 canvas");
 	if (!header) {
-		console.error("Failed to scrape game title");
 		return;
 	}
 
 	const fileNameEl = document.querySelector("#data-good-title > #canvas2");
 	if (!fileNameEl) {
-		console.error("Failed to scrape game file name");
 		return;
 	}
 
 	const systemName = document.querySelector("main .sectionTitle")
 		?.textContent as VimmSystem | undefined;
 	if (!systemName) {
-		console.error("Failed to scrape system name");
 		return;
 	}
 
 	const detailsContainer = document.querySelector(".mainContent tr#row-date");
 	if (!detailsContainer) {
-		console.error("Failed to scrape details container");
 		return;
 	}
 
@@ -93,7 +89,6 @@ function buildRaRow() {
 	const gameTitle = decodeDataV(header);
 	// without game title we cannot get the RA ID for the game
 	if (!gameTitle) {
-		console.error("Failed to decode the game title");
 		return;
 	}
 

@@ -1,13 +1,23 @@
 import browser from "webextension-polyfill";
 
 export async function buildVimmDialog() {
+	const { name, version } = browser.runtime.getManifest();
+	const { latestVersion } = await browser.storage.local.get("latestVersion");
+
+	const updateBanner =
+		latestVersion && latestVersion !== version
+			? `<div id="updateVersionText" style="font-size: 90%; color: var(--title-color); margin-bottom: 8px">
+			New version v${latestVersion} available! <a href="https://github.com/aquelemiguel/vimms-cheevos/releases/latest" target="_blank" class="external">Download</a>
+		</div>`
+			: "";
+
 	const dialog = document.createElement("dialog");
 	dialog.id = "raDialog";
 	dialog.style.cssText =
 		"border: 0px; padding: 0px; background-color: transparent; cursor: auto;";
 
 	dialog.innerHTML = `
-    <div style="text-align: center; font-size: 14pt">Vimm's Cheevos</div>
+    <div style="text-align: center; font-size: 14pt">${name}</div>
     <div class="rounded" style="min-width: 420px; min-height: 50px; padding: 10px">
       <div style="min-width:320px; max-width:640px; overflow:auto">
         <div style="max-height: 80vh">
@@ -33,9 +43,8 @@ export async function buildVimmDialog() {
 					About
 				</h3>
 				<div>
-					<div style="margin: 0">
-						Vimm's Cheevos v${browser.runtime.getManifest().version}
-					</div>
+					<div>Current version: v${version}</div>
+					${updateBanner}
 					<div style="font-size: 80%; color: silver">
 						Unofficial extension, not affiliated with Vimm's Lair or RetroAchievements.
 					</div>

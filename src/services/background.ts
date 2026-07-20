@@ -27,6 +27,35 @@ const titleTransforms: Partial<Record<VimmSystem, TitleTransform>> = {
 	},
 };
 
+async function checkForUpdate() {
+	try {
+		const res = await fetch(
+			"https://api.github.com/repos/aquelemiguel/vimms-cheevos/releases/latest",
+		);
+		if (!res.ok) {
+			return;
+		}
+
+		const { tag_name: tagName } = (await res.json()) as { tag_name: string };
+		const latestVersion = tagName.replace("v", "");
+
+		await browser.storage.local.set({ latestVersion });
+	} catch {
+		// whatever, we'll retry later
+	}
+}
+
+browser.runtime.onInstalled.addListener(checkForUpdate);
+
+// polls for a new update every 6 hours
+browser.alarms.create("checkForUpdate", { periodInMinutes: 60 * 6 });
+
+browser.alarms.onAlarm.addListener((alarm) => {
+	if (alarm.name === "checkForUpdate") {
+		checkForUpdate();
+	}
+});
+
 // @ts-expect-error
 browser.runtime.onMessage.addListener(async (m) => {
 	const message = m as MatchGameMessageRequest;
