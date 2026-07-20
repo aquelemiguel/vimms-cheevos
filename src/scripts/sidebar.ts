@@ -11,7 +11,7 @@ import { buildVimmDialog } from "../components/dialog";
 	const { latestVersion } = await browser.storage.local.get("latestVersion");
 
 	const sidebarTitle =
-		latestVersion === version ? name : `${name} (Update available)`;
+		latestVersion === version ? name : `${name} (Update available!)`;
 
 	const hr = document.createElement("div");
 	hr.innerHTML = `<hr>`;
