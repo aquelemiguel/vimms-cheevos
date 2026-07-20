@@ -1,5 +1,3 @@
-type RASearchScope = "games"; // only typing games for the time being
-
 export interface RASearchSystem {
 	id: number;
 	name: string;
@@ -20,6 +18,12 @@ export interface RASearchGame {
 export interface RASearchResponse {
 	results: { games: RASearchGame[] };
 	query: string;
-	scopes: RASearchScope[];
-	scopeRelevance: Record<RASearchScope, number>;
+	scopes: ["games"];
+	scopeRelevance: { games: number };
+	pagination?: {
+		currentPage: number;
+		lastPage: number;
+		perPage: number;
+		total: number;
+	};
 }

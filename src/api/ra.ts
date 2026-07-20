@@ -43,7 +43,7 @@ export async function isVariantSupported(
 
 export async function searchTitle(query: string, systemId: number) {
 	const res = await fetch(
-		`https://retroachievements.org/internal-api/search?q=${query}&scope=games`,
+		`https://retroachievements.org/internal-api/search?q=${query}&scope=games&page=1&perPage=50`,
 		{
 			method: "GET",
 		},
