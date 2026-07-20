@@ -1,7 +1,9 @@
+import type { VimmSystem } from "./vimm";
+
 export type MatchGameMessageRequest = {
 	gameTitle: string;
 	gameVariant: string;
-	systemName: string;
+	systemName: VimmSystem;
 };
 
 export type MatchGameMessageResponse =

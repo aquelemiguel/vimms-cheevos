@@ -3,6 +3,7 @@ import type {
 	MatchGameMessageRequest,
 	MatchGameMessageResponse,
 } from "../types/messages";
+import type { VimmSystem } from "../types/vimm";
 
 function decodeDataV(el: Element) {
 	const encoded = el.getAttribute("data-v");
@@ -66,16 +67,20 @@ function buildRaRow() {
 		console.error("Failed to scrape game title");
 		return;
 	}
+
 	const gameVariantEl = document.querySelector("#data-good-title > #canvas2");
 	if (!gameVariantEl) {
 		console.error("Failed to scrape game variant");
 		return;
 	}
-	const systemName = document.querySelector("main .sectionTitle")?.textContent;
+
+	const systemName = document.querySelector("main .sectionTitle")
+		?.textContent as VimmSystem | undefined;
 	if (!systemName) {
 		console.error("Failed to scrape system name");
 		return;
 	}
+
 	const detailsContainer = document.querySelector(".mainContent tr#row-date");
 	if (!detailsContainer) {
 		console.error("Failed to scrape details container");
@@ -95,7 +100,7 @@ function buildRaRow() {
 	async function checkVariantMatch(
 		gameTitle: string,
 		gameVariant: string,
-		systemName: string,
+		systemName: VimmSystem,
 	) {
 		raStatus.textContent = "Checking...";
 		raStatus.style.cssText = "color: silver";
@@ -107,7 +112,7 @@ function buildRaRow() {
 			>({
 				gameTitle,
 				gameVariant,
-				systemName: systemName,
+				systemName,
 			});
 
 			if (response.type === "missingAuth") {

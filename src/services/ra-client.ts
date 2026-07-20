@@ -1,15 +1,29 @@
 import browser from "webextension-polyfill";
 import { getAuthorization, isVariantSupported, searchTitle } from "../api/ra";
-import { getRASystemId } from "../constants/systems";
+import { getRASystem } from "../constants/systems";
 import type { MatchGameMessageRequest } from "../types/messages";
+import type { VimmSystem } from "../types/vimm";
 
 type TitleTransform = (title: string) => string;
 
-const titleTransforms: Record<number, TitleTransform> = {
-	// atari lynx
-	13: (str) => {
-		// replace extension: .lyx (vimm's) -> .lnx (RA)
+const titleTransforms: Partial<Record<VimmSystem, TitleTransform>> = {
+	Lynx: (str) => {
 		return str.replace(/\.lyx$/, ".lnx");
+	},
+	"Atari 7800": (str) => {
+		return str.replace(/\.bin$/, ".a78");
+	},
+	"PlayStation 2": (str) => {
+		return str.replace(/\.iso/, "");
+	},
+	GameCube: (str) => {
+		return str.replace(/\.iso/, "");
+	},
+	Wii: (str) => {
+		return str.replace(/\.iso/, "");
+	},
+	WiiWare: (str) => {
+		return str.replace(/\.wad/, "");
 	},
 };
 
@@ -22,7 +36,7 @@ browser.runtime.onMessage.addListener(async (m) => {
 		return { type: "missingAuth" };
 	}
 
-	const system = getRASystemId(message.systemName);
+	const system = getRASystem(message.systemName);
 	if (system === null || system.id === null) {
 		return { type: "unsupportedSystem" };
 	}
@@ -32,8 +46,11 @@ browser.runtime.onMessage.addListener(async (m) => {
 
 	let normalizedTitle = message.gameVariant;
 
-	if (system.id in titleTransforms) {
-		normalizedTitle = titleTransforms[system.id](normalizedTitle);
+	if (message.systemName in titleTransforms) {
+		const transform = titleTransforms[message.systemName];
+		if (transform) {
+			normalizedTitle = transform(normalizedTitle);
+		}
 	}
 
 	const gameId = await searchTitle(message.gameTitle, system.id);

@@ -1,9 +1,11 @@
+import type { VimmSystem } from "../types/vimm";
+
 export type RASystem = {
 	id: number | null;
 	active: boolean;
 };
 
-const VimmRASystemMap = {
+export const VimmRASystemMap = {
 	"Atari 2600": {
 		id: 25,
 		active: true,
@@ -146,9 +148,6 @@ const VimmRASystemMap = {
 	},
 } satisfies Record<string, RASystem>;
 
-export function getRASystemId(vimmSystem: string): RASystem | null {
-	if (vimmSystem in VimmRASystemMap) {
-		return VimmRASystemMap[vimmSystem as keyof typeof VimmRASystemMap];
-	}
-	return null;
+export function getRASystem(system: VimmSystem): RASystem | null {
+	return VimmRASystemMap[system];
 }
