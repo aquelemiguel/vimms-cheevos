@@ -6,15 +6,19 @@ export type MatchGameMessageRequest = {
 
 export type MatchGameMessageResponse =
 	| {
-			isMissingAuth: true;
-	  }
-	| {
-			isMissingAuth: false;
-			gameId: null;
-			isSupported: false;
-	  }
-	| {
-			isMissingAuth: false;
+			type: "success";
 			gameId: number;
 			isSupported: boolean;
+	  }
+	| {
+			type: "missingAuth";
+	  }
+	| {
+			type: "unsupportedSystem";
+	  }
+	| {
+			type: "inactiveSystem";
+	  }
+	| {
+			type: "notFound";
 	  };

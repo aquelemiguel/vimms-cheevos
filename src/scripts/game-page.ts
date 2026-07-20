@@ -110,8 +110,19 @@ function buildRaRow() {
 				systemName: systemName,
 			});
 
-			if (response.isMissingAuth) {
+			if (response.type === "missingAuth") {
 				raStatus.textContent = "Missing RA config!";
+				return;
+			}
+			if (response.type === "notFound") {
+				raStatus.textContent = "Not found...";
+				return;
+			}
+			if (
+				response.type === "unsupportedSystem" ||
+				response.type === "inactiveSystem"
+			) {
+				raStatus.textContent = "Unsupported system";
 				return;
 			}
 

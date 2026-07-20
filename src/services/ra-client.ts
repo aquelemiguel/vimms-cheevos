@@ -1,5 +1,6 @@
 import browser from "webextension-polyfill";
 import { getAuthorization, isVariantSupported, searchTitle } from "../api/ra";
+import { getRASystemId } from "../constants/systems";
 import type { MatchGameMessageRequest } from "../types/messages";
 
 // @ts-expect-error
@@ -8,16 +9,20 @@ browser.runtime.onMessage.addListener(async (m) => {
 
 	const authorization = await getAuthorization();
 	if (!authorization) {
-		return { isMissingAuth: true };
+		return { type: "missingAuth" };
 	}
 
-	const gameId = await searchTitle(message.gameTitle, message.systemName);
+	const system = getRASystemId(message.systemName);
+	if (system === null || system.id === null) {
+		return { type: "unsupportedSystem" };
+	}
+	if (!system.active) {
+		return { type: "inactiveSystem" };
+	}
+
+	const gameId = await searchTitle(message.gameTitle, system.id);
 	if (!gameId) {
-		return {
-			gameId: null,
-			isSupported: false,
-			isMissingAuth: false,
-		};
+		return { type: "notFound" };
 	}
 
 	const isSupported = await isVariantSupported(
@@ -25,5 +30,5 @@ browser.runtime.onMessage.addListener(async (m) => {
 		gameId,
 		message.gameVariant,
 	);
-	return { gameId, isSupported, isMissingAuth: false };
+	return { type: "success", gameId, isSupported };
 });

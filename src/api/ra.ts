@@ -4,7 +4,6 @@ import {
 	getGameHashes,
 } from "@retroachievements/api";
 import browser from "webextension-polyfill";
-import { getRASystemId } from "../constants/systems";
 import type { RASearchResponse } from "../types/ra";
 
 export async function getAuthorization() {
@@ -40,12 +39,7 @@ export async function isVariantSupported(
 	return false;
 }
 
-export async function searchTitle(query: string, vimmSystem: string) {
-	const systemId = getRASystemId(vimmSystem);
-	if (!systemId) {
-		return null; // parsed vimm system somehow doesn't map to any RA system
-	}
-
+export async function searchTitle(query: string, systemId: number) {
 	const res = await fetch(
 		`https://retroachievements.org/internal-api/search?q=${query}&scope=games`,
 		{
