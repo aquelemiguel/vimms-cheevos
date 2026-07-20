@@ -49,9 +49,21 @@ export async function searchTitle(query: string, systemId: number) {
 		},
 	);
 
+	const normalizedQuery = query.trim().toLowerCase();
+
 	const payload: RASearchResponse = await res.json();
 
-	for (const game of payload.results.games) {
+	// in RAWeb, exactness is underneath popularity score but we need exactness first,
+	// otherwise e.g., q="Mega Man" outputs MMX (SNES) and MM2 (NES) before MM (NES)
+	// see config/scout.php in https://github.com/RetroAchievements/RAWeb
+
+	const games = [...payload.results.games].sort((a, b) => {
+		const aExact = a.title.trim().toLowerCase() === normalizedQuery ? 1 : 0;
+		const bExact = b.title.trim().toLowerCase() === normalizedQuery ? 1 : 0;
+		return bExact - aExact;
+	});
+
+	for (const game of games) {
 		if (game.system.id === systemId) {
 			return game.id;
 		}

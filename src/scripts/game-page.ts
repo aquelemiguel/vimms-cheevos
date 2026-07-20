@@ -120,7 +120,7 @@ function buildRaRow() {
 				return;
 			}
 			if (response.type === "notFound") {
-				raStatus.textContent = "Not found...";
+				raStatus.textContent = "Not found";
 				return;
 			}
 			if (
