@@ -1,31 +1,11 @@
 import browser from "webextension-polyfill";
-import { getAuthorization, isGameFileSupported, searchTitle } from "../api/ra";
+import {
+	getAuthorization,
+	isGameFileSupported,
+	searchTitleInSystem,
+} from "../api/ra";
 import { getRASystem } from "../constants/systems";
 import type { MatchGameMessageRequest } from "../types/messages";
-import type { VimmSystem } from "../types/vimm";
-
-type TitleTransform = (title: string) => string;
-
-const titleTransforms: Partial<Record<VimmSystem, TitleTransform>> = {
-	Lynx: (str) => {
-		return str.replace(/\.lyx$/, ".lnx");
-	},
-	"Atari 7800": (str) => {
-		return str.replace(/\.bin$/, ".a78");
-	},
-	"PlayStation 2": (str) => {
-		return str.replace(/\.iso/, "");
-	},
-	GameCube: (str) => {
-		return str.replace(/\.iso/, "");
-	},
-	Wii: (str) => {
-		return str.replace(/\.iso/, "");
-	},
-	WiiWare: (str) => {
-		return str.replace(/\.wad/, "");
-	},
-};
 
 async function checkForUpdate() {
 	try {
@@ -73,16 +53,7 @@ browser.runtime.onMessage.addListener(async (m) => {
 		return { type: "inactiveSystem" };
 	}
 
-	let normalizedFileName = message.game.fileName;
-
-	if (message.system in titleTransforms) {
-		const transform = titleTransforms[message.system];
-		if (transform) {
-			normalizedFileName = transform(normalizedFileName);
-		}
-	}
-
-	const gameId = await searchTitle(message.game.title, system.id);
+	const gameId = await searchTitleInSystem(message.game.title, system.id);
 	if (!gameId) {
 		return { type: "notFound" };
 	}
@@ -90,7 +61,7 @@ browser.runtime.onMessage.addListener(async (m) => {
 	const isSupported = await isGameFileSupported(
 		authorization,
 		gameId,
-		normalizedFileName,
+		message.game.fileName,
 		message.game.md5,
 	);
 	return { type: "success", gameId, isSupported };

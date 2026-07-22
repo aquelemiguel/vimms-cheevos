@@ -32,12 +32,17 @@ export async function isGameFileSupported(
 ) {
 	const hashes = await getGameHashes(authorization, { gameId });
 
+	const normalize = (str: string) => {
+		// strip out file extensions
+		return str.toLowerCase().replace(/\.[^.]+$/, "");
+	};
+
 	for (const result of hashes.results) {
 		if (
 			// should be fool-proof for cartridge-based systems
 			result.md5 === md5 ||
 			// x-match no-intro/redump naming
-			result.name.toLowerCase() === fileName.toLowerCase()
+			normalize(result.name) === normalize(fileName)
 		) {
 			return true;
 		}
@@ -45,7 +50,7 @@ export async function isGameFileSupported(
 	return false;
 }
 
-export async function searchTitle(query: string, systemId: number) {
+export async function searchTitleInSystem(query: string, systemId: number) {
 	const res = await fetch(
 		`https://retroachievements.org/internal-api/search?q=${query}&scope=games&page=1&perPage=50`,
 		{
