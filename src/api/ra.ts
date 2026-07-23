@@ -33,8 +33,20 @@ export async function isGameFileSupported(
 	const hashes = await getGameHashes(authorization, { gameId });
 
 	const normalize = (str: string) => {
-		// strip out file extensions
-		return str.toLowerCase().replace(/\.[^.]+$/, "");
+		return (
+			str
+				.toLowerCase()
+				// strip out file extensions but don't pick up version numbers
+				// a file extension never has a closing parenthesis at the end
+				.replace(/\.[a-z0-9]+$/i, (m) => (m.endsWith(")") ? m : ""))
+
+				// strip out languages
+				.replace(/\s*\([a-z]{2}(?:,\s*[a-z]{2})*\)/, "")
+
+				// handle custom redump renaming from RA's side
+				.replace("(usa, canada)", "(usa)")
+				.replace("(europe, australia)", "(europe)")
+		);
 	};
 
 	for (const result of hashes.results) {
