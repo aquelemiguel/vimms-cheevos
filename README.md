@@ -4,7 +4,6 @@
 [![Downloads](https://img.shields.io/github/downloads/aquelemiguel/vimms-cheevos/total?style=for-the-badge&color=success&logo=github)](https://github.com/aquelemiguel/vimms-cheevos/releases)
 [![Stars](https://img.shields.io/github/stars/aquelemiguel/vimms-cheevos?style=for-the-badge&color=yellow&logo=github)](https://github.com/aquelemiguel/vimms-cheevos/stargazers)
 [![Issues](https://img.shields.io/github/issues/aquelemiguel/vimms-cheevos?style=for-the-badge&color=orange)](https://github.com/aquelemiguel/vimms-cheevos/issues)
-[![License](https://img.shields.io/github/license/aquelemiguel/vimms-cheevos?style=for-the-badge&color=lightgrey)](https://github.com/aquelemiguel/vimms-cheevos/blob/main/LICENSE)
 
 A cross-browser extension that checks whether a game file hosted on [Vimm's Lair](https://vimm.net/) is supported by [RetroAchievements](https://retroachievements.org/), matching files names using the No-Intro (cartridge-based systems) and Redump (disc-based systems) naming both sites share.
 
